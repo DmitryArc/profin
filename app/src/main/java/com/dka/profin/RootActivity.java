@@ -1,52 +1,68 @@
 package com.dka.profin;
 
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class RootActivity extends AppCompatActivity {
+import com.dka.mainmenu.DrawerActivity;
+import com.dka.mainmenu.DrawerFragment;
+import com.dka.mainmenu.utils.NavigateUtils;
+
+public class RootActivity extends DrawerActivity {
+    private static final DrawerFragment.MainMenuItem[] MAIN_MENU_ITEMS = new DrawerFragment.MainMenuItem[]{
+            new DrawerFragment.MainMenuItem(R.string.menu_item1, android.R.drawable.ic_media_play),
+            new DrawerFragment.MainMenuItem(R.string.menu_item2, android.R.drawable.ic_menu_edit),
+            new DrawerFragment.MainMenuItem(R.string.menu_item3, android.R.drawable.ic_menu_camera, false),
+            new DrawerFragment.MainMenuItem(R.string.menu_item4, android.R.drawable.ic_menu_zoom, false).setDisabled(true)
+    };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_root);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+    protected int getDefaultMenuItemId() {
+        return R.string.menu_item1;
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_root, menu);
-        return true;
+    protected DrawerFragment.MainMenuItem[] getMainMenuItemArray() {
+        return MAIN_MENU_ITEMS;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    protected void replaceContentFragmentByMenuId(int menuItemId,
+                                                  Bundle extras) {
+        switch (menuItemId) {
+            case R.string.menu_item1:
+                Log.d(">>>", "Item 1 selected");
+                NavigateUtils.replaceContent(getSupportFragmentManager(), new RootActivityFragment());
+                break;
+            case R.string.menu_item2:
+                Log.d(">>>", "Item 2 selected");
+                break;
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public void onMainMenuItemClick(@StringRes int menuItemTitleResId,
+                                    Bundle args) {
+        switch (menuItemTitleResId) {
+            case R.string.menu_item1:
+                Log.d(">>>", "Item 1 clicked");
+                NavigateUtils.replaceContent(getSupportFragmentManager(), new RootActivityFragment());
+                break;
+            case R.string.menu_item3:
+                Log.d(">>>", "Item 3 clicked");
+                break;
+        }
+    }
+
+    @Override
+    public int getHeaderBackgroundResource() {
+        return R.drawable.bg_menu_header;
     }
 }

@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Profin</string>
     <string name="action_settings">Settings</string>
+
+    <!--Menu items-->
+    <string name="menu_item1">Item1</string>
+    <string name="menu_item2">Item2</string>
+    <string name="menu_item3">Item3</string>
+    <string name="menu_item4">Item4</string>
 </resources>
