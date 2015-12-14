@@ -63,6 +63,6 @@ public class RootActivity extends DrawerActivity {
 
     @Override
     public int getHeaderBackgroundResource() {
-        return R.drawable.bg_menu_header;
+        return 0;
     }
 }

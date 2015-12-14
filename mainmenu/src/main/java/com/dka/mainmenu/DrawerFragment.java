@@ -106,7 +106,8 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
         final View header = LayoutInflater.from(getActivity()).inflate(R.layout.view_menu_header, mListView, false);
         mHeaderTitle = (TextView) header.findViewById(R.id.tv_header_title);
         mHeaderSubtitle = (TextView) header.findViewById(R.id.tv_header_subtitle);
-        if (mMainMenuListener != null) {
+        if (mMainMenuListener != null &&
+                mMainMenuListener.getHeaderBackgroundResource() > 0) {
             header.findViewById(R.id.header_bg).setBackgroundResource(mMainMenuListener.getHeaderBackgroundResource());
         }
         mListView.addHeaderView(header, null, false);
