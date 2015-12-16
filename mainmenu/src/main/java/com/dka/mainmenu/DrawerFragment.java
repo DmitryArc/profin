@@ -349,7 +349,7 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
             viewHolder.title.setCompoundDrawablesWithIntrinsicBounds(
                     new ActivatedStateDrawable(iconDrawable,
                             !menuItem.disabled ? Color.GRAY : Color.LTGRAY,
-                            ColorUtils.getThemeAttrColor(getActivity(), R.attr.colorAccent)),
+                            ColorUtils.getThemeAttrColor(getActivity(), R.attr.colorPrimary)),
                     null, null, null);
 
             if (menuItem.counter > 0) {
