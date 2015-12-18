@@ -8,7 +8,7 @@ import com.dka.mainmenu.DrawerActivity;
 import com.dka.mainmenu.DrawerFragment;
 import com.dka.mainmenu.utils.NavigateUtils;
 import com.dka.profin.fragment.ReportFragment;
-import com.dka.profin.fragment.RootActivityFragment;
+import com.dka.profin.fragment.RootFragment;
 import com.dka.profin.fragment.SettingsFragment;
 
 public class RootActivity extends DrawerActivity {
@@ -34,15 +34,12 @@ public class RootActivity extends DrawerActivity {
                                                   Bundle extras) {
         switch (menuItemId) {
             case R.string.menu_dashboard:
-                Log.d(">>>", "Item 1 selected");
-                NavigateUtils.replaceContent(getSupportFragmentManager(), new RootActivityFragment());
+                NavigateUtils.replaceContent(getSupportFragmentManager(), new RootFragment());
                 break;
             case R.string.menu_report:
-                Log.d(">>>", "Item 2 selected");
                 NavigateUtils.replaceContent(getSupportFragmentManager(), new ReportFragment());
                 break;
             case R.string.menu_settings:
-                Log.d(">>>", "Item 3 selected");
                 NavigateUtils.replaceContent(getSupportFragmentManager(), new SettingsFragment());
                 break;
         }
@@ -53,7 +50,6 @@ public class RootActivity extends DrawerActivity {
                                     Bundle args) {
         switch (menuItemTitleResId) {
             case R.string.menu_item4:
-                Log.d(">>>", "Item 4 clicked");
                 break;
         }
     }

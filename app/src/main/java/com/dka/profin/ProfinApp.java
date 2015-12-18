@@ -16,5 +16,8 @@ public class ProfinApp extends Application {
         if (instance == null) {
             instance = this;
         }
+
+        // Used only for the first launch to put test data to the DB
+//        Test.setTestData(this);
     }
 }
