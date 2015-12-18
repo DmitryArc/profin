@@ -28,6 +28,8 @@ public class ProfinProvider extends ContentProvider {
     public static final int MAIN_ITEM = 102;
     public static final int CATEGORY_DIR = 201;
     public static final int CATEGORY_ITEM = 202;
+    public static final int CATEGORY_DIR_JOINED = 301;
+    public static final int CATEGORY_ITEM_JOINED = 302;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
@@ -35,6 +37,8 @@ public class ProfinProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, MainContract.TABLE_NAME + "/#", MAIN_ITEM);
         sUriMatcher.addURI(AUTHORITY, CategoryContract.TABLE_NAME, CATEGORY_DIR);
         sUriMatcher.addURI(AUTHORITY, CategoryContract.TABLE_NAME + "/#", CATEGORY_ITEM);
+        sUriMatcher.addURI(AUTHORITY, CategoryContract.TABLE_NAME + "/" + CategoryContract.PATH_JOINED, CATEGORY_DIR_JOINED);
+        sUriMatcher.addURI(AUTHORITY, CategoryContract.TABLE_NAME + "/" + CategoryContract.PATH_JOINED + "/#", CATEGORY_ITEM_JOINED);
     }
 
     private volatile ProfinDatabaseHelper mDbHelper;
@@ -88,6 +92,34 @@ public class ProfinProvider extends ContentProvider {
                 }
                 break;
 
+            case CATEGORY_DIR_JOINED:
+            case CATEGORY_ITEM_JOINED:
+                StringBuilder sb = new StringBuilder();
+                sb.append(CategoryContract.TABLE_NAME);
+                sb.append(" LEFT OUTER JOIN ");
+                sb.append(MainContract.TABLE_NAME);
+                sb.append(" ON (");
+                sb.append(CategoryContract.TABLE_NAME);
+                sb.append('.');
+                sb.append(CategoryContract.Columns._ID);
+                sb.append(" = ");
+                sb.append(MainContract.TABLE_NAME);
+                sb.append('.');
+                sb.append(MainContract.Columns.CATEGORY_ID);
+                sb.append(")");
+                table = sb.toString();
+                groupBy = MainContract.Columns.CATEGORY_ID;
+                queryBuilder.setTables(table);
+                queryBuilder.setProjectionMap(CategoryContract.PROJ_MAP_JOINED_WITH_COSTS);
+
+                if(uriType == MAIN_ITEM){
+                    isItemUriType = true;
+                } else {
+                    isItemUriType = false;
+                }
+                break;
+
+
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
         }
@@ -127,7 +159,6 @@ public class ProfinProvider extends ContentProvider {
         final String table;
         final ColumnMap columnMap;
         final int uriType = sUriMatcher.match(uri);
-        final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
         switch (uriType) {
             case MAIN_DIR:
@@ -206,7 +237,6 @@ public class ProfinProvider extends ContentProvider {
         final ColumnMap columnMap;
         final int uriType = sUriMatcher.match(uri);
         final boolean isItemUriType;
-        final SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
         switch (uriType) {
             case MAIN_DIR:

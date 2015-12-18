@@ -15,12 +15,15 @@ import java.util.Map;
  */
 public interface CategoryContract {
     String TABLE_NAME = "_categories";
+    String PATH_JOINED = "full";
 
     Uri CONTENT_URI = new Uri.Builder()
             .scheme(ContentResolver.SCHEME_CONTENT)
             .authority(ProfinProvider.AUTHORITY)
             .appendPath(TABLE_NAME)
             .build();
+
+    Uri CONTENT_URI_JOINED = Uri.withAppendedPath(CONTENT_URI, PATH_JOINED);
 
     String MIME_TYPE = "/vnd." + ProfinProvider.AUTHORITY + "." + TABLE_NAME;
     String CONTENT_TYPE_DIR = ContentResolver.CURSOR_DIR_BASE_TYPE + MIME_TYPE;
@@ -30,6 +33,13 @@ public interface CategoryContract {
             .addColumn(BaseColumns._ID, BaseColumns._ID)
             .addColumn(Columns.NAME, Columns.NAME)
             .addColumn(Columns.PROPORTION, Columns.PROPORTION)
+            .build().getProjectionMap();
+
+    Map<String, String> PROJ_MAP_JOINED_WITH_COSTS = new ProjectionMap.Builder()
+            .addColumn(BaseColumns._ID, TABLE_NAME + "." + BaseColumns._ID)
+            .addColumn(Columns.NAME, Columns.NAME)
+            .addColumn(Columns.PROPORTION, Columns.PROPORTION)
+            .addColumn(MainContract.Columns.SUM, "SUM(" + MainContract.TABLE_NAME + "." + MainContract.Columns.SUM +")")
             .build().getProjectionMap();
 
     ColumnMap COL_MAP = new ColumnMap.Builder()

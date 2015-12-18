@@ -3,7 +3,6 @@ package com.dka.profin;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.util.Log;
 
@@ -33,4 +32,5 @@ public class Test {
             Log.d(">>>", "Created expenditure with ID " + ContentUris.parseId(insert));
         }
     }
+
 }

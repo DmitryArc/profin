@@ -2,6 +2,7 @@ package com.dka.profin.fragment;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -9,6 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,7 @@ import com.dka.mainmenu.ContentFragment;
 import com.dka.profin.R;
 import com.dka.profin.common.CursorRecyclerViewAdapter;
 import com.dka.profin.data.contract.CategoryContract;
+import com.dka.profin.data.contract.MainContract;
 
 /**
  * @author Dmitry.Kalyuzhnyi 14.12.2015.
@@ -53,14 +56,14 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
     @Override
     public Loader<Cursor> onCreateLoader(int id,
                                          Bundle args) {
-        return new CursorLoader(getContext(), CategoryContract.CONTENT_URI, null, null, null, null);
+        return new CursorLoader(getContext(), CategoryContract.CONTENT_URI_JOINED, null, null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(">>>", DatabaseUtils.dumpCursorToString(data));
         if (data != null && mAdapter.getCursor() != data) {
             mAdapter.swapCursor(data);
-
         }
     }
 
@@ -72,12 +75,14 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
     private static class CategoryViewHolder extends RecyclerView.ViewHolder {
         final TextView mName;
         final TextView mProportion;
+        final TextView mSum;
 
         public CategoryViewHolder(View itemView) {
             super(itemView);
 
             mName = (TextView) itemView.findViewById(R.id.tv_cat_name);
             mProportion = (TextView) itemView.findViewById(R.id.tv_cat_proportion);
+            mSum = (TextView) itemView.findViewById(R.id.tv_cat_sum);
         }
     }
 
@@ -90,11 +95,12 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
         public void onBindViewHolder(CategoryViewHolder viewHolder, Cursor cursor) {
             viewHolder.mName.setText(cursor.getString(cursor.getColumnIndex(CategoryContract.Columns.NAME)));
             viewHolder.mProportion.setText(cursor.getString(cursor.getColumnIndex(CategoryContract.Columns.PROPORTION)));
+            viewHolder.mSum.setText(cursor.getString(cursor.getColumnIndex(MainContract.Columns.SUM)));
         }
 
         @Override
         public CategoryViewHolder onCreateViewHolder(ViewGroup parent,
-                                                        int viewType) {
+                                                     int viewType) {
             return new CategoryViewHolder(LayoutInflater.from(getActivity()).inflate(R.layout.item_category, parent, false));
         }
     }
