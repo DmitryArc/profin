@@ -132,6 +132,9 @@ public class ProfinProvider extends ContentProvider {
         }
 
         final Cursor cursor = queryBuilder.query(mDbHelper.getReadableDatabase(), projection, selection, selectionArgs, groupBy, null, sortOrder);
+        if(cursor != null){
+            cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        }
         return cursor;
     }
 
@@ -178,6 +181,7 @@ public class ProfinProvider extends ContentProvider {
         if (row > 0) {
             if (getContext() != null) {
                 getContext().getContentResolver().notifyChange(uri, null, false);
+                getContext().getContentResolver().notifyChange(CategoryContract.CONTENT_URI_JOINED, null, false);
             }
             return ContentUris.withAppendedId(uri, row);
         } else {
@@ -223,6 +227,7 @@ public class ProfinProvider extends ContentProvider {
 
         if (deleted > 0 && getContext() != null) {
             getContext().getContentResolver().notifyChange(uri, null);
+            getContext().getContentResolver().notifyChange(CategoryContract.CONTENT_URI_JOINED, null);
         }
 
         return deleted;
@@ -275,6 +280,7 @@ public class ProfinProvider extends ContentProvider {
 
         if (updated > 0 && getContext() != null) {
             getContext().getContentResolver().notifyChange(uri, null, false);
+            getContext().getContentResolver().notifyChange(CategoryContract.CONTENT_URI_JOINED, null, false);
         }
 
         return updated;

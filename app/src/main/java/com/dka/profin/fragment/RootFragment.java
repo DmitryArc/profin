@@ -5,8 +5,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -130,7 +128,7 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
 
     private class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryViewHolder> {
         public CategoryAdapter(Context context) {
-            super(context, null);
+            super(context, null, true);
         }
 
         @Override
@@ -153,10 +151,6 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
         public QueryHandler(ContentResolver cr) {
             super(cr);
         }
-
-        @Override
-        protected void onInsertComplete(int token, Object cookie, Uri uri) {
-            getLoaderManager().getLoader(ROOT_FRAGMENT_LOADER).forceLoad();
-        }
     }
+
 }
