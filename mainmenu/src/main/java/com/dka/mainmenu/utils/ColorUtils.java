@@ -1,6 +1,7 @@
 package com.dka.mainmenu.utils;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.TypedValue;
 
 /**
@@ -8,7 +9,7 @@ import android.util.TypedValue;
  */
 public class ColorUtils {
 
-    public static int getThemeAttrColor(Context context,
+    public static int getThemeAttrColor(@NonNull Context context,
                                         int attr) {
         final TypedValue typedValue = new TypedValue();
         if (context.getTheme().resolveAttribute(attr, typedValue, true)) {

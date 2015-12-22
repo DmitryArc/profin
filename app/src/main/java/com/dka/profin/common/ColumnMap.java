@@ -16,6 +16,7 @@
 package com.dka.profin.common;
 
 import android.content.ContentValues;
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import java.util.Collections;
@@ -84,6 +85,7 @@ public class ColumnMap {
          * @param type
          * @return the builder
          */
+        @NonNull
         public Builder addColumn(String virtCol,
                                  String actCol,
                                  Type type) {
@@ -94,6 +96,7 @@ public class ColumnMap {
         /**
          * @return the column map
          */
+        @NonNull
         public ColumnMap build() {
             return new ColumnMap(colMap);
         }
@@ -120,8 +123,8 @@ public class ColumnMap {
          * @param dst
          */
         public void copy(String srcCol,
-                         ContentValues src,
-                         ContentValues dst) {
+                         @NonNull ContentValues src,
+                         @NonNull ContentValues dst) {
             switch (type) {
                 case BOOLEAN:
                     dst.put(name, src.getAsBoolean(srcCol));
@@ -157,7 +160,7 @@ public class ColumnMap {
 
     private final Map<String, ColumnDef> colMap;
 
-    ColumnMap(Map<String, ColumnDef> colMap) {
+    ColumnMap(@NonNull Map<String, ColumnDef> colMap) {
         this.colMap = Collections.unmodifiableMap(colMap);
     }
 
@@ -165,7 +168,8 @@ public class ColumnMap {
      * @param vals
      * @return content values for actual table
      */
-    public ContentValues translateCols(ContentValues vals) {
+    @NonNull
+    public ContentValues translateCols(@NonNull ContentValues vals) {
         ContentValues newVals = new ContentValues();
         for (Map.Entry<String, Object> entry : vals.valueSet()) {
             String colName = entry.getKey();

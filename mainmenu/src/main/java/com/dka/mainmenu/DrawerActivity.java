@@ -2,6 +2,7 @@ package com.dka.mainmenu;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
@@ -30,16 +31,18 @@ public abstract class DrawerActivity extends AppCompatActivity implements Drawer
 
     private int mCurrentMenuItemId;
     private DrawerLayout mDrawerLayout;
+    @Nullable
     private ActionBarDrawerToggle mDrawerToggle;
 
     protected abstract int getDefaultMenuItemId();
 
+    @NonNull
     protected abstract DrawerFragment.MainMenuItem[] getMainMenuItemArray();
 
     protected abstract void replaceContentFragmentByMenuId(int menuItemId,
                                                            Bundle extras);
 
-    public static void setMenuItemChecked(FragmentActivity activity,
+    public static void setMenuItemChecked(@Nullable FragmentActivity activity,
                                           int menuItemId) {
         if (activity != null && activity instanceof DrawerActivity) {
             DrawerActivity drawerActivity = (DrawerActivity) activity;
@@ -51,13 +54,13 @@ public abstract class DrawerActivity extends AppCompatActivity implements Drawer
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putInt(CURRENT_MENU_ITEM_ID, mCurrentMenuItemId);
         super.onSaveInstanceState(outState);
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(@NonNull Intent intent) {
         super.onNewIntent(intent);
         if (intent.hasExtra(START_MENU_ITEM_ID)) {
             onMainMenuItemSelect(intent.getIntExtra(START_MENU_ITEM_ID, getDefaultMenuItemId()), intent.getExtras());
@@ -66,7 +69,7 @@ public abstract class DrawerActivity extends AppCompatActivity implements Drawer
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ac_drawer);
         if (savedInstanceState == null) {

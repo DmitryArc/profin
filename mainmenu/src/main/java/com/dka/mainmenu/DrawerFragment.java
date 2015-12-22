@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,15 +38,18 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
 
     private DrawerLayout mDrawerLayout;
     private ListView mListView;
+    @Nullable
     private MainMenuListener mMainMenuListener;
     private int mCurrentSelectedPosition;
     private int mPendingPositon;
     private DrawerLayout.DrawerListener mDrawerListenerDelegate;
+    @Nullable
     private ArrayList<MainMenuItem> mItemsArray;
     private MainMenuAdapter mAdapter;
     private TextView mHeaderTitle;
     private TextView mHeaderSubtitle;
 
+    @NonNull
     public static DrawerFragment newInstance(MainMenuItem[] itemArray) {
         final DrawerFragment fragment = new DrawerFragment();
         final Bundle args = new Bundle();
@@ -53,7 +58,7 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
         return fragment;
     }
 
-    public static void selectMenuItem(FragmentManager fm,
+    public static void selectMenuItem(@NonNull FragmentManager fm,
                                       int menuItemId) {
         final DrawerFragment drawerFragment = (DrawerFragment) fm.findFragmentById(R.id.mainMenuFragment);
         drawerFragment.mCurrentSelectedPosition = getMenuPosition(menuItemId, drawerFragment.mItemsArray);
@@ -61,8 +66,8 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
         drawerFragment.checkCurrentListItem();
     }
 
-    public static void setUp(FragmentManager fm,
-                             DrawerLayout drawerLayout,
+    public static void setUp(@NonNull FragmentManager fm,
+                             @NonNull DrawerLayout drawerLayout,
                              int initMenuItemId,
                              MainMenuItem[] mainMenuItems,
                              DrawerLayout.DrawerListener listenerDelegate) {
@@ -74,7 +79,7 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
         drawerFragment.setUp(drawerLayout, initMenuItemId, listenerDelegate, mainMenuItems);
     }
 
-    private void setUp(DrawerLayout drawerLayout,
+    private void setUp(@NonNull DrawerLayout drawerLayout,
                        int initMenuItemId,
                        DrawerLayout.DrawerListener listenerDelegate,
                        MainMenuItem[] mainMenuItems) {
@@ -98,7 +103,7 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
         mListView = (ListView) inflater.inflate(R.layout.fr_main_menu, container, false);
@@ -132,7 +137,7 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
         }
     }
 
-    private void handleItemClick(final MainMenuItem menuItem){
+    private void handleItemClick(@NonNull final MainMenuItem menuItem){
         mListView.setItemChecked(mCurrentSelectedPosition + mListView.getHeaderViewsCount(), true);
         if (mMainMenuListener != null) {
             mMainMenuListener.onMainMenuItemClick(menuItem.titleResId, null);
@@ -150,7 +155,7 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
     }
 
     private static int getMenuPosition(int menuItemid,
-                                       ArrayList<MainMenuItem> mainMenuItems) {
+                                       @NonNull ArrayList<MainMenuItem> mainMenuItems) {
         for (int i = 0; i < mainMenuItems.size(); i++) {
             if (mainMenuItems.get(i).titleResId == menuItemid) {
                 return i;
@@ -237,11 +242,13 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
     public static class MainMenuItem implements Parcelable {
 
         public static final Creator<MainMenuItem> CREATOR = new Creator<MainMenuItem>() {
+            @NonNull
             @Override
-            public MainMenuItem createFromParcel(Parcel source) {
+            public MainMenuItem createFromParcel(@NonNull Parcel source) {
                 return new MainMenuItem(source);
             }
 
+            @NonNull
             @Override
             public MainMenuItem[] newArray(int size) {
                 return new MainMenuItem[size];
@@ -271,7 +278,7 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
             this.disabled = false;
         }
 
-        private MainMenuItem(Parcel source) {
+        private MainMenuItem(@NonNull Parcel source) {
             titleResId = source.readInt();
             iconResId = source.readInt();
             selectable = source.readByte() == 1;
@@ -284,7 +291,7 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
         }
 
         @Override
-        public void writeToParcel(Parcel dest,
+        public void writeToParcel(@NonNull Parcel dest,
                                   int flags) {
             dest.writeInt(titleResId);
             dest.writeInt(iconResId);
@@ -292,6 +299,7 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
             dest.writeByte((byte) (disabled ? 1 : 0));
         }
 
+        @NonNull
         public MainMenuItem setDisabled(boolean disabled) {
             this.disabled = disabled;
             return this;
@@ -326,9 +334,10 @@ public class DrawerFragment extends Fragment implements AdapterView.OnItemClickL
             return mItemsArray.get(position).titleResId;
         }
 
+        @Nullable
         @Override
         public View getView(int position,
-                            View convertView,
+                            @Nullable View convertView,
                             ViewGroup parent) {
             final ViewHolder viewHolder;
             if (convertView == null) {

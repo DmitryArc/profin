@@ -15,6 +15,7 @@
 */
 package com.dka.profin.common;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 
 import java.util.Collections;
@@ -30,12 +31,13 @@ public class ProjectionMap {
      * Builder
      */
     public static class Builder {
+        @NonNull
         Map<String, String> colMap = new ArrayMap<>();
 
         public Builder() {
         }
 
-        public Builder(Map<String, String> map) {
+        public Builder(@NonNull Map<String, String> map) {
             colMap.putAll(map);
         }
 
@@ -44,6 +46,7 @@ public class ProjectionMap {
          * @param actCol
          * @return the builder
          */
+        @NonNull
         public Builder addColumn(String virtCol,
                                  String actCol) {
             colMap.put(virtCol, actCol + " AS " + virtCol);
@@ -56,6 +59,7 @@ public class ProjectionMap {
          * @param actCol
          * @return the builder
          */
+        @NonNull
         public Builder addColumn(String virtCol,
                                  String actTab,
                                  String actCol) {
@@ -65,6 +69,7 @@ public class ProjectionMap {
         /**
          * @return the column map
          */
+        @NonNull
         public ProjectionMap build() {
             return new ProjectionMap(colMap);
         }
@@ -73,7 +78,7 @@ public class ProjectionMap {
 
     private final Map<String, String> colMap;
 
-    ProjectionMap(Map<String, String> colMap) {
+    ProjectionMap(@NonNull Map<String, String> colMap) {
         this.colMap = Collections.unmodifiableMap(colMap);
     }
 

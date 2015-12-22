@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -40,7 +41,7 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fr_root, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.list_main);
@@ -62,6 +63,7 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
     }
 
 
+    @Nullable
     @Override
     public Loader<Cursor> onCreateLoader(int id,
                                          Bundle args) {
@@ -69,7 +71,7 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    public void onLoadFinished(Loader<Cursor> loader, @Nullable Cursor data) {
         if (data != null && mAdapter.getCursor() != data) {
             mAdapter.swapCursor(data);
         }
@@ -83,11 +85,14 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
     private static class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         final CategoryItemClickListener mCategoryItemClickListener;
 
+        @NonNull
         final TextView mName;
+        @NonNull
         final TextView mProportion;
+        @NonNull
         final TextView mSum;
 
-        public CategoryViewHolder(View itemView,
+        public CategoryViewHolder(@NonNull View itemView,
                                   CategoryItemClickListener listener) {
             super(itemView);
 
@@ -132,13 +137,14 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
         }
 
         @Override
-        public void onBindViewHolder(CategoryViewHolder viewHolder, Cursor cursor) {
+        public void onBindViewHolder(@NonNull CategoryViewHolder viewHolder, @NonNull Cursor cursor) {
             viewHolder.mName.setText(cursor.getString(cursor.getColumnIndex(CategoryContract.Columns.NAME)));
             viewHolder.mProportion.setText(cursor.getString(cursor.getColumnIndex(CategoryContract.Columns.PROPORTION)));
             viewHolder.mSum.setText(cursor.getString(cursor.getColumnIndex(MainContract.Columns.SUM)));
 
         }
 
+        @NonNull
         @Override
         public CategoryViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {

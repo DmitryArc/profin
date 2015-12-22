@@ -1,6 +1,7 @@
 package com.dka.profin;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.util.Log;
 
@@ -24,6 +25,7 @@ public class RootActivity extends DrawerActivity {
         return R.string.menu_dashboard;
     }
 
+    @NonNull
     @Override
     protected DrawerFragment.MainMenuItem[] getMainMenuItemArray() {
         return MAIN_MENU_ITEMS;

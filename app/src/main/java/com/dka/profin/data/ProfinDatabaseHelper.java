@@ -3,6 +3,7 @@ package com.dka.profin.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import com.dka.profin.data.contract.CategoryContract;
 import com.dka.profin.data.contract.MainContract;
@@ -19,7 +20,7 @@ public class ProfinDatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(@NonNull SQLiteDatabase db) {
         db.execSQL(MainContract.CREATE_TABLE_QUERY);
         db.execSQL(CategoryContract.CREATE_TABLE_QUERY);
     }

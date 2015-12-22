@@ -19,6 +19,8 @@ package com.dka.profin.common;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DataSetObserver;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
 /**
@@ -28,12 +30,14 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
 
     private Context mContext;
 
+    @Nullable
     private Cursor mCursor;
 
     private boolean mDataValid;
 
     private int mRowIdColumn;
 
+    @Nullable
     private final DataSetObserver mDataSetObserver;
 
     public CursorRecyclerViewAdapter(Context context,
@@ -42,7 +46,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
     }
 
     public CursorRecyclerViewAdapter(Context context,
-                                     Cursor cursor,
+                                     @Nullable Cursor cursor,
                                      boolean registerContentObserver) {
         mContext = context;
         mCursor = cursor;
@@ -58,6 +62,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
         }
     }
 
+    @Nullable
     public Cursor getCursor() {
         return mCursor;
     }
@@ -102,7 +107,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
      * Change the underlying cursor to a new cursor. If there is an existing cursor it will be
      * closed.
      */
-    public void changeCursor(Cursor cursor) {
+    public void changeCursor(@NonNull Cursor cursor) {
         Cursor old = swapCursor(cursor);
         if (old != null) {
             old.close();
@@ -114,7 +119,8 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
      * {@link #changeCursor(Cursor)}, the returned old Cursor is <em>not</em>
      * closed.
      */
-    public Cursor swapCursor(Cursor newCursor) {
+    @Nullable
+    public Cursor swapCursor(@NonNull Cursor newCursor) {
         if (newCursor == mCursor) {
             return null;
         }

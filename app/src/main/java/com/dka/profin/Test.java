@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.dka.profin.data.contract.CategoryContract;
@@ -13,7 +14,7 @@ import com.dka.profin.data.contract.MainContract;
  * @author Dmitry.Kalyuzhnyi 17.12.2015.
  */
 public class Test {
-    public static void setTestData(Context context){
+    public static void setTestData(@NonNull Context context){
         for(int i = 0; i < 3; i++) {
             final ContentValues cv = new ContentValues();
             cv.put(CategoryContract.Columns.NAME, "Category " + (i + 1));

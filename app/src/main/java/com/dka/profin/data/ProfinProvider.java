@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.BaseColumns;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.dka.profin.BuildConfig;
@@ -41,6 +42,7 @@ public class ProfinProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, CategoryContract.TABLE_NAME + "/" + CategoryContract.PATH_JOINED + "/#", CATEGORY_ITEM_JOINED);
     }
 
+    @Nullable
     private volatile ProfinDatabaseHelper mDbHelper;
 
     @Override
@@ -157,8 +159,8 @@ public class ProfinProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(Uri uri,
-                      ContentValues values) {
+    public Uri insert(@NonNull Uri uri,
+                      @NonNull ContentValues values) {
         final String table;
         final ColumnMap columnMap;
         final int uriType = sUriMatcher.match(uri);
@@ -190,7 +192,7 @@ public class ProfinProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri,
+    public int delete(@NonNull Uri uri,
                       String selection,
                       String[] selectionArgs) {
         final String table;
@@ -234,8 +236,8 @@ public class ProfinProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri,
-                      ContentValues values,
+    public int update(@NonNull Uri uri,
+                      @NonNull ContentValues values,
                       String selection,
                       String[] selectionArgs) {
         final String table;
