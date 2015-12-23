@@ -87,7 +87,7 @@ public class ProfinProvider extends ContentProvider {
                 queryBuilder.setTables(table);
                 queryBuilder.setProjectionMap(CategoryContract.PROJ_MAP);
 
-                if(uriType == MAIN_ITEM){
+                if(uriType == CATEGORY_ITEM){
                     isItemUriType = true;
                 } else {
                     isItemUriType = false;
@@ -114,7 +114,7 @@ public class ProfinProvider extends ContentProvider {
                 queryBuilder.setTables(table);
                 queryBuilder.setProjectionMap(CategoryContract.PROJ_MAP_JOINED_WITH_COSTS);
 
-                if(uriType == MAIN_ITEM){
+                if(uriType == CATEGORY_ITEM){
                     isItemUriType = true;
                 } else {
                     isItemUriType = false;
@@ -294,4 +294,5 @@ public class ProfinProvider extends ContentProvider {
         return DatabaseUtils.concatenateWhere(String.format(SELECTION_BY_ID_PATTERN, table, ContentUris.parseId(uri)),
                 selection);
     }
+
 }

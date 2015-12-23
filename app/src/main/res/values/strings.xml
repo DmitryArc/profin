@@ -8,4 +8,10 @@
     <string name="menu_report">Report</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_item4">Item4</string>
+
+    <string name="enter_data">Enter Data</string>
+    <string name="sum">Sum</string>
+    <string name="sum_empty">Sum can\'t be empty</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>

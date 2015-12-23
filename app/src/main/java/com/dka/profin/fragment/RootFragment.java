@@ -1,13 +1,11 @@
 package com.dka.profin.fragment;
 
-import android.content.AsyncQueryHandler;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -35,7 +33,6 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
     private RecyclerView mRecyclerView;
     private CategoryAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private QueryHandler mQueryhandler;
 
     public RootFragment() {
     }
@@ -57,9 +54,6 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(ROOT_FRAGMENT_LOADER, null, this);
-        if(mQueryhandler == null){
-            mQueryhandler = new QueryHandler(getContext().getContentResolver());
-        }
     }
 
 
@@ -121,14 +115,15 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
     public void onItemClick(int position) {
         final Cursor cursor = mAdapter.getCursor();
         cursor.moveToPosition(position);
-        int id = cursor.getInt(cursor.getColumnIndex(CategoryContract.Columns._ID));
-        if (mQueryhandler != null) {
-            final ContentValues cv = new ContentValues();
-            cv.put(MainContract.Columns.CATEGORY_ID, id);
-            cv.put(MainContract.Columns.SUM, 10);
-            cv.put(MainContract.Columns.DATE_TIME, System.currentTimeMillis());
-            mQueryhandler.startInsert(0, null, MainContract.CONTENT_URI, cv);
-        }
+        final int id = cursor.getInt(cursor.getColumnIndex(CategoryContract.Columns._ID));
+        final String name = cursor.getString(cursor.getColumnIndex(CategoryContract.Columns.NAME));
+
+        DialogFragment dialogFragment = new EnterDataFragment();
+        final Bundle args = new Bundle();
+        args.putInt(EnterDataFragment.EXTRA_CATEGORY_ID, id);
+        args.putString(EnterDataFragment.EXTRA_CATEGORY_NAME, name);
+        dialogFragment.setArguments(args);
+        dialogFragment.show(getFragmentManager(), EnterDataFragment.TAG);
     }
 
     private class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryViewHolder> {
@@ -150,12 +145,6 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
                                                      int viewType) {
             return new CategoryViewHolder(LayoutInflater.from(getActivity()).inflate(R.layout.item_category, parent, false),
                     RootFragment.this);
-        }
-    }
-
-    public class QueryHandler extends AsyncQueryHandler {
-        public QueryHandler(ContentResolver cr) {
-            super(cr);
         }
     }
 
