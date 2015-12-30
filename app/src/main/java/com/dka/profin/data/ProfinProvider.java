@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import com.dka.profin.BuildConfig;
 import com.dka.profin.common.ColumnMap;
 import com.dka.profin.data.contract.CategoryContract;
+import com.dka.profin.data.contract.IncomeContract;
 import com.dka.profin.data.contract.MainContract;
 
 /**
@@ -31,6 +32,8 @@ public class ProfinProvider extends ContentProvider {
     public static final int CATEGORY_ITEM = 202;
     public static final int CATEGORY_DIR_JOINED = 301;
     public static final int CATEGORY_ITEM_JOINED = 302;
+    public static final int INCOME_DIR = 401;
+    public static final int INCOME_ITEM = 402;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
@@ -40,6 +43,8 @@ public class ProfinProvider extends ContentProvider {
         sUriMatcher.addURI(AUTHORITY, CategoryContract.TABLE_NAME + "/#", CATEGORY_ITEM);
         sUriMatcher.addURI(AUTHORITY, CategoryContract.TABLE_NAME + "/" + CategoryContract.PATH_JOINED, CATEGORY_DIR_JOINED);
         sUriMatcher.addURI(AUTHORITY, CategoryContract.TABLE_NAME + "/" + CategoryContract.PATH_JOINED + "/#", CATEGORY_ITEM_JOINED);
+        sUriMatcher.addURI(AUTHORITY, IncomeContract.TABLE_NAME, INCOME_DIR);
+        sUriMatcher.addURI(AUTHORITY, IncomeContract.TABLE_NAME + "/#", INCOME_ITEM);
     }
 
     @Nullable
@@ -121,6 +126,19 @@ public class ProfinProvider extends ContentProvider {
                 }
                 break;
 
+            case INCOME_DIR:
+            case INCOME_ITEM:
+                table = IncomeContract.TABLE_NAME;
+                queryBuilder.setTables(table);
+                queryBuilder.setProjectionMap(IncomeContract.PROJ_MAP);
+
+                if(uriType == INCOME_ITEM){
+                    isItemUriType = true;
+                } else {
+                    isItemUriType = false;
+                }
+                break;
+
 
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -152,6 +170,10 @@ public class ProfinProvider extends ContentProvider {
                 return CategoryContract.CONTENT_TYPE_DIR;
             case CATEGORY_ITEM:
                 return CategoryContract.CONTENT_TYPE_ITEM;
+            case INCOME_DIR:
+                return MainContract.CONTENT_TYPE_DIR;
+            case INCOME_ITEM:
+                return MainContract.CONTENT_TYPE_ITEM;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
@@ -173,6 +195,10 @@ public class ProfinProvider extends ContentProvider {
             case CATEGORY_DIR:
                 table = CategoryContract.TABLE_NAME;
                 columnMap = CategoryContract.COL_MAP;
+                break;
+            case INCOME_DIR:
+                table = IncomeContract.TABLE_NAME;
+                columnMap = IncomeContract.COL_MAP;
                 break;
 
             default:
@@ -214,6 +240,14 @@ public class ProfinProvider extends ContentProvider {
                 break;
             case CATEGORY_ITEM:
                 table = CategoryContract.TABLE_NAME;
+                isItemUriType = true;
+                break;
+            case INCOME_DIR:
+                table = IncomeContract.TABLE_NAME;
+                isItemUriType = false;
+                break;
+            case INCOME_ITEM:
+                table = IncomeContract.TABLE_NAME;
                 isItemUriType = true;
                 break;
 
@@ -262,13 +296,24 @@ public class ProfinProvider extends ContentProvider {
                 table = CategoryContract.TABLE_NAME;
                 columnMap = CategoryContract.COL_MAP;
 
-                if(uriType == MAIN_ITEM){
+                if(uriType == CATEGORY_ITEM){
                     isItemUriType = true;
                 } else {
                     isItemUriType = false;
                 }
                 break;
 
+            case INCOME_DIR:
+            case INCOME_ITEM:
+                table = IncomeContract.TABLE_NAME;
+                columnMap = IncomeContract.COL_MAP;
+
+                if(uriType == INCOME_ITEM){
+                    isItemUriType = true;
+                } else {
+                    isItemUriType = false;
+                }
+                break;
             default:
                 throw new UnsupportedOperationException("Unsupported URI: " + uri);
         }

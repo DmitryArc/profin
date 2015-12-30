@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
 
 import com.dka.profin.data.contract.CategoryContract;
+import com.dka.profin.data.contract.IncomeContract;
 import com.dka.profin.data.contract.MainContract;
 
 /**
@@ -23,6 +24,7 @@ public class ProfinDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(@NonNull SQLiteDatabase db) {
         db.execSQL(MainContract.CREATE_TABLE_QUERY);
         db.execSQL(CategoryContract.CREATE_TABLE_QUERY);
+        db.execSQL(IncomeContract.CREATE_TABLE_QUERY);
     }
 
     @Override
