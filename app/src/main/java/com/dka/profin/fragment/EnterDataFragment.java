@@ -6,6 +6,7 @@ import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -22,19 +23,19 @@ import com.dka.profin.data.contract.MainContract;
 /**
  * @author Dmitry.Kalyuzhnyi 22.12.2015.
  */
-public class EnterDataFragment extends DialogFragment implements View.OnClickListener {
+public abstract class EnterDataFragment extends DialogFragment implements View.OnClickListener {
     public static final String TAG = EnterDataFragment.class.getSimpleName();
     public static final String EXTRA_CATEGORY_ID = "categoryId";
     public static final String EXTRA_CATEGORY_NAME = "categoryName";
 
-    private int mCateroryId;
-    private String mCategoryName;
+    protected int mCateroryId;
+    protected String mCategoryName;
 
-    private TextView vCategoryName;
-    private TextInputLayout vSumContainer;
-    private EditText vSum;
+    protected TextView vCategoryName;
+    protected TextInputLayout vSumContainer;
+    protected EditText vSum;
 
-    private QueryHandler mQueryhandler;
+    protected QueryHandler mQueryhandler;
 
     @Override
     public void onAttach(Activity activity) {
@@ -84,28 +85,12 @@ public class EnterDataFragment extends DialogFragment implements View.OnClickLis
         }
     }
 
-    private boolean addRecord() {
-        final String sumStr = vSum.getText().toString();
-        if (!sumStr.isEmpty()) {
-            if (mQueryhandler == null) {
-                mQueryhandler = new QueryHandler(getContext().getContentResolver());
-            }
-
-            final ContentValues cv = new ContentValues();
-            cv.put(MainContract.Columns.CATEGORY_ID, mCateroryId);
-            cv.put(MainContract.Columns.SUM, Integer.parseInt(sumStr));
-            cv.put(MainContract.Columns.DATE_TIME, System.currentTimeMillis());
-            mQueryhandler.startInsert(0, null, MainContract.CONTENT_URI, cv);
-
-            return true;
-        } else {
-            return false;
-        }
-    }
+    protected abstract boolean addRecord();
 
     public class QueryHandler extends AsyncQueryHandler {
         public QueryHandler(ContentResolver cr) {
             super(cr);
         }
     }
+
 }

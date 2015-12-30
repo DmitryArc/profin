@@ -118,12 +118,12 @@ public class RootFragment extends ContentFragment implements LoaderManager.Loade
         final int id = cursor.getInt(cursor.getColumnIndex(CategoryContract.Columns._ID));
         final String name = cursor.getString(cursor.getColumnIndex(CategoryContract.Columns.NAME));
 
-        DialogFragment dialogFragment = new EnterDataFragment();
+        DialogFragment dialogFragment = new EnterCostFragment();
         final Bundle args = new Bundle();
         args.putInt(EnterDataFragment.EXTRA_CATEGORY_ID, id);
         args.putString(EnterDataFragment.EXTRA_CATEGORY_NAME, name);
         dialogFragment.setArguments(args);
-        dialogFragment.show(getFragmentManager(), EnterDataFragment.TAG);
+        dialogFragment.show(getFragmentManager(), EnterCostFragment.TAG);
     }
 
     private class CategoryAdapter extends CursorRecyclerViewAdapter<CategoryViewHolder> {
